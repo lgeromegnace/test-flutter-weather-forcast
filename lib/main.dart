@@ -19,7 +19,12 @@ class MyApp extends StatelessWidget {
       create: (context) => Session(),
       child: MaterialApp(
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          brightness: Brightness.dark,
+          appBarTheme: Theme.of(context).appBarTheme.copyWith(
+            color: Colors.black12,
+          ),
+          primaryColor: const Color(0xFF222727),
+          cardColor: Colors.black12,
         ),
         initialRoute: '/',
         routes: {
