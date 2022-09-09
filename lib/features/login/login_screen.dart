@@ -59,7 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
               final isValid = formKey.currentState?.validate();
               if (isValid == true) {
                 formKey.currentState?.save();
-                print("email: $email, password: $password");
+                Navigator.popAndPushNamed(context, '/forecast');
               }
             }, child: const Text('Validate'))
           ],
