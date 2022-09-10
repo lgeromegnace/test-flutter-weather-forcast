@@ -23,8 +23,7 @@ class ForecastService {
       longitude: 2.333333
   );
 
-  Future<List<HourlyForecast>> fetch() async {
-
+  Future<List<HourlyForecast>> fetchHourlyForecast() async {
     await initializeDateFormatting('fr_FR', null);
     double latitude = parisCoordinates.latitude;
     double longitude = parisCoordinates.longitude;

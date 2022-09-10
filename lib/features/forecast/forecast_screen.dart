@@ -18,7 +18,7 @@ class _ForeCastScreenState extends State<ForeCastScreen> {
   @override
   void initState() {
     super.initState();
-    futureForecastList = service.fetch();
+    futureForecastList = service.fetchHourlyForecast();
   }
   @override
   Widget build(BuildContext context) {
