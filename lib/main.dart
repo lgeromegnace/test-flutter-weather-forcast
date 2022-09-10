@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weather/features/forecast/forecast_screen.dart';
-import 'package:weather/session.dart';
+import 'package:weather/features/models/session.dart';
 import 'features/login/login_screen.dart';
 
 void main() {

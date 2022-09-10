@@ -3,37 +3,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart';
 import 'package:intl/date_symbol_data_local.dart';
-
-class Forecast {
-  final DateTime dateTime;
-  final int temperature;
-  final int maxTemperature;
-  final int minTemperature;
-  final String weatherDescription;
-  final String icon;
-
-  const Forecast({
-    required this.dateTime,
-    required this.temperature,
-    required this.maxTemperature,
-    required this.minTemperature,
-    required this.weatherDescription,
-    required this.icon
-  });
-
-  factory Forecast.fromJson(Map<String, dynamic> json) {
-    Map<String, dynamic> mainJson = json['main'];
-    List<dynamic> weatherJson = json['weather'];
-    return Forecast(
-        dateTime: DateTime.fromMillisecondsSinceEpoch(json['dt'] * 1000),
-        temperature: mainJson['temp'].round(),
-        maxTemperature: mainJson['temp_max'].round(),
-        minTemperature: mainJson['temp_min'].round(),
-        weatherDescription: weatherJson.first['description'],
-        icon: weatherJson.first['icon']
-    );
-  }
-}
+import 'package:weather/features/models/hourly_forecast.dart';
 
 class Coordinates {
   final double latitude;
@@ -53,7 +23,7 @@ class ForecastService {
       longitude: 2.333333
   );
 
-  Future<List<Forecast>> fetch() async {
+  Future<List<HourlyForecast>> fetch() async {
 
     await initializeDateFormatting('fr_FR', null);
     double latitude = parisCoordinates.latitude;
@@ -65,7 +35,7 @@ class ForecastService {
     if (response.statusCode == 200) {
       Map<String, dynamic> json = jsonDecode(response.body);
       Iterable forecastListJson = json['list'];
-      return forecastListJson.map((forecastJson) => Forecast.fromJson(forecastJson)).toList();
+      return forecastListJson.map((forecastJson) => HourlyForecast.fromJson(forecastJson)).toList();
     }
     print('error: ${response.reasonPhrase}');
     return [];

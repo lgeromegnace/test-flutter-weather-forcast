@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:weather/features/models/hourly_forecast.dart';
 import 'package:weather/services/forecast_service.dart';
 
 class ForeCastScreen extends StatefulWidget {
@@ -12,7 +13,7 @@ class ForeCastScreen extends StatefulWidget {
 class _ForeCastScreenState extends State<ForeCastScreen> {
   final ForecastService service = ForecastService();
 
-  Future<List<Forecast>>? futureForecastList;
+  Future<List<HourlyForecast>>? futureForecastList;
 
   @override
   void initState() {
@@ -27,7 +28,7 @@ class _ForeCastScreenState extends State<ForeCastScreen> {
       ),
       body: FutureBuilder(
         future: futureForecastList,
-        builder: (BuildContext context, AsyncSnapshot<List<Forecast>> snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<List<HourlyForecast>> snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.none:
               return const Center(
@@ -42,12 +43,12 @@ class _ForeCastScreenState extends State<ForeCastScreen> {
               print('Error${snapshot.error}');
               return Text('Error${snapshot.error}');
             }
-            List<Forecast> forecastList = snapshot.data!;
+            List<HourlyForecast> forecastList = snapshot.data!;
             return ListView.builder(
               padding: const EdgeInsets.all(8),
               itemCount: forecastList.length,
                 itemBuilder: (context, index) {
-                  Forecast forecast = forecastList[index];
+                  HourlyForecast forecast = forecastList[index];
                   final dateFormat = DateFormat('E d MMM HH:mm', 'fr_FR');
                   return Card(
                     child: Padding(
