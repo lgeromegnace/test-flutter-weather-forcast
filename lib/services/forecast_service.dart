@@ -1,9 +1,18 @@
 
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:http/http.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:weather/features/models/daily_forecast.dart';
 import 'package:weather/features/models/hourly_forecast.dart';
+
+extension DateOnlyCompare on DateTime {
+  bool isSameDate(DateTime other) {
+    return day == other.day && month == other.month
+        && year == other.year;
+  }
+}
 
 class Coordinates {
   final double latitude;
@@ -16,14 +25,14 @@ class Coordinates {
 }
 
 class ForecastService {
-  final String apiKey = 'b677c9ebb7c448fe76654f3627a5ed34';
-  final String baseURL = 'api.openweathermap.org/data/2.5/forecast';
-  final Coordinates parisCoordinates = const Coordinates(
+  static const String apiKey = 'b677c9ebb7c448fe76654f3627a5ed34';
+  static const String baseURL = 'api.openweathermap.org/data/2.5/forecast';
+  static const Coordinates parisCoordinates = Coordinates(
       latitude: 48.866667,
       longitude: 2.333333
   );
 
-  Future<List<HourlyForecast>> fetchHourlyForecast() async {
+  static Future<List<HourlyForecast>> fetchHourlyForecast() async {
     await initializeDateFormatting('fr_FR', null);
     double latitude = parisCoordinates.latitude;
     double longitude = parisCoordinates.longitude;
@@ -38,5 +47,30 @@ class ForecastService {
     }
     print('error: ${response.reasonPhrase}');
     return [];
+  }
+
+  static Future<List<DailyForecast>> fetchDailyForecast() async {
+    List<HourlyForecast> hourlyForecastList = await fetchHourlyForecast();
+    return hourlyForecastList.fold(<DailyForecast>[], (previousValue, hourlyForecast) async {
+      List<DailyForecast> dailyForecastList = await previousValue;
+      Iterable<DailyForecast> filteredDailyForecast = dailyForecastList
+          .where((dailyForecast) => dailyForecast.dateTime.isSameDate(hourlyForecast.dateTime));
+      if (filteredDailyForecast.isEmpty) {
+        DailyForecast dailyForecast = DailyForecast(
+            dateTime: hourlyForecast.dateTime,
+            minTemperature: hourlyForecast.temperature,
+            maxTemperature: hourlyForecast.temperature,
+            hourlyForecast: [hourlyForecast]
+        );
+        dailyForecastList.add(dailyForecast);
+      } else {
+        DailyForecast dailyForecast = filteredDailyForecast.first;
+        dailyForecast.minTemperature = min(dailyForecast.minTemperature, hourlyForecast.temperature);
+        dailyForecast.maxTemperature = max(dailyForecast.maxTemperature, hourlyForecast.temperature);
+        dailyForecast.hourlyForecast.add(hourlyForecast);
+      }
+      print(dailyForecastList);
+      return dailyForecastList;
+    });
   }
 }
