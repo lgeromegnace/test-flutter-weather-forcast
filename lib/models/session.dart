@@ -12,7 +12,9 @@ class Session extends ChangeNotifier {
     notifyListeners();
   }
   setIsConnected(bool connected) {
-    isConnected = connected;
-    notifyListeners();
+    if(user != null) {
+      isConnected = connected;
+      notifyListeners();
+    }
   }
 }
