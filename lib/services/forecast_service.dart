@@ -37,7 +37,6 @@ class ForecastService {
     double latitude = parisCoordinates.latitude;
     double longitude = parisCoordinates.longitude;
     String url = 'https://$baseURL?lat=$latitude&lon=$longitude&appid=$apiKey&units=metric&lang=fr';
-    print(url);
     Uri uri = Uri.parse(url);
     Response response = await get(uri);
     if (response.statusCode == 200) {
@@ -45,7 +44,6 @@ class ForecastService {
       Iterable forecastListJson = json['list'];
       return forecastListJson.map((forecastJson) => HourlyForecast.fromJson(forecastJson)).toList();
     }
-    print('error: ${response.reasonPhrase}');
     return [];
   }
 
@@ -69,7 +67,6 @@ class ForecastService {
         dailyForecast.maxTemperature = max(dailyForecast.maxTemperature, hourlyForecast.temperature);
         dailyForecast.hourlyForecast.add(hourlyForecast);
       }
-      print(dailyForecastList);
       return dailyForecastList;
     });
   }

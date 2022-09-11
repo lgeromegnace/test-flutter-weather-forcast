@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:weather/features/forecast/widgets/daily_forecast_list.dart';
+import 'package:weather/features/models/daily_forecast.dart';
 import 'package:weather/features/models/hourly_forecast.dart';
 import 'package:weather/features/models/session.dart';
 import 'package:weather/services/forecast_service.dart';
@@ -16,11 +18,13 @@ class _ForeCastScreenState extends State<ForeCastScreen> {
   final ForecastService service = ForecastService();
 
   Future<List<HourlyForecast>>? futureForecastList;
+  Future<List<DailyForecast>>? futureDailyForecastList;
 
   @override
   void initState() {
     super.initState();
-    futureForecastList = service.fetchHourlyForecast();
+    futureForecastList = ForecastService.fetchHourlyForecast();
+    futureDailyForecastList = ForecastService.fetchDailyForecast();
   }
   @override
   Widget build(BuildContext context) {
@@ -31,8 +35,8 @@ class _ForeCastScreenState extends State<ForeCastScreen> {
             title: Text('Bienvenue ${session.user?.name}'),
           ),
           body: FutureBuilder(
-              future: futureForecastList,
-              builder: (BuildContext context, AsyncSnapshot<List<HourlyForecast>> snapshot) {
+              future: futureDailyForecastList,
+              builder: (BuildContext context, AsyncSnapshot<List<DailyForecast>> snapshot) {
                 switch (snapshot.connectionState) {
                   case ConnectionState.none:
                     return const Center(
@@ -44,40 +48,11 @@ class _ForeCastScreenState extends State<ForeCastScreen> {
                     );
                   default:
                     if (snapshot.hasError) {
-                      print('Error${snapshot.error}');
                       return Text('Error${snapshot.error}');
                     }
-                    List<HourlyForecast> forecastList = snapshot.data!;
-                    return ListView.builder(
-                        padding: const EdgeInsets.all(8),
-                        itemCount: forecastList.length,
-                        itemBuilder: (context, index) {
-                          HourlyForecast forecast = forecastList[index];
-                          final dateFormat = DateFormat('E d MMM HH:mm', 'fr_FR');
-                          return Card(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                children: [
-                                  Image.network('http://openweathermap.org/img/wn/${forecast.icon}@2x.png'),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        dateFormat.format(forecast.dateTime).toString(),
-                                        style: Theme.of(context).textTheme.titleMedium,
-                                      ),
-                                      const SizedBox(height: 2),
-                                      Text('temperature : ${forecast.temperature}°C'),
-                                      const SizedBox(height: 2),
-                                      Text(forecast.weatherDescription)
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          );
-                        }
+                    List<DailyForecast> forecastList = snapshot.data!;
+                    return CustomScrollView(
+                      slivers: dailyForecastSliverList(forecastList),
                     );
                 }
               }
@@ -86,4 +61,27 @@ class _ForeCastScreenState extends State<ForeCastScreen> {
       },
     );
   }
+}
+
+List<Widget> dailyForecastSliverList(List<DailyForecast> dailyForecastList) {
+  List<Widget> sliverList = <Widget>[];
+  final dateFormat = DateFormat('E d MMM', 'fr_FR');
+  for(DailyForecast dailyForecast in dailyForecastList) {
+    sliverList.add(
+        SliverAppBar(
+          title: Row(
+            children: [
+              Text(dateFormat.format(dailyForecast.dateTime).toString()),
+              const Spacer(),
+              Text('${dailyForecast.minTemperature}° - ${dailyForecast.maxTemperature}°')
+            ],
+          ),
+          pinned: true,
+          backgroundColor: Colors.black,
+        )
+    );
+    sliverList.add(DailyForecastList(forecastList: dailyForecast.hourlyForecast));
+  }
+
+  return sliverList;
 }
