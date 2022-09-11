@@ -1,6 +1,6 @@
 # weather
 
-Une application basique qui affiche les prévision des 5 prochains jours.
+Une application basique qui affiche les prévisions météo des 5 prochains jours.
 
 ## Architecture
 
