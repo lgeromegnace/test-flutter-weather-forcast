@@ -29,7 +29,7 @@ class HourlyForecastGridItem extends StatelessWidget {
                       decoration: BoxDecoration(
                         gradient: RadialGradient(
                           colors: [
-                            Colors.grey[800]!,
+                            Colors.orange[100]!.withAlpha(200)!,
                             Colors.transparent,
                           ]
                         )
@@ -42,13 +42,14 @@ class HourlyForecastGridItem extends StatelessWidget {
                     Center(
                         child: Text('${forecast.temperature}°',
                           style: Theme.of(context).textTheme.headline4,
+
                         )
                     ),
                   ],
                 ),
               ),
               Text(forecast.weatherDescription,
-              style: Theme.of(context).textTheme.subtitle1,),
+              style: Theme.of(context).textTheme.subtitle2,),
             ],
           ),
         ),

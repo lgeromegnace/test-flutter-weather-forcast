@@ -31,28 +31,31 @@ class _ForeCastScreenState extends State<ForeCastScreen> {
           appBar: AppBar(
             title: Text('Bienvenue ${session.user?.name}'),
           ),
-          body: FutureBuilder(
-              future: _futureDailyForecastList,
-              builder: (BuildContext context, AsyncSnapshot<List<DailyForecast>> snapshot) {
-                switch (snapshot.connectionState) {
-                  case ConnectionState.none:
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  case ConnectionState.waiting:
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  default:
-                    if (snapshot.hasError) {
-                      return Text('Error${snapshot.error}');
-                    }
-                    List<DailyForecast> forecastList = snapshot.data!;
-                    return CustomScrollView(
-                      slivers: dailyForecastSliverList(forecastList),
-                    );
+          body: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: FutureBuilder(
+                future: _futureDailyForecastList,
+                builder: (BuildContext context, AsyncSnapshot<List<DailyForecast>> snapshot) {
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.none:
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    case ConnectionState.waiting:
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    default:
+                      if (snapshot.hasError) {
+                        return Text('Error${snapshot.error}');
+                      }
+                      List<DailyForecast> forecastList = snapshot.data!;
+                      return CustomScrollView(
+                        slivers: dailyForecastSliverList(context, forecastList),
+                      );
+                  }
                 }
-              }
+            ),
           ),
         );
       },
@@ -60,7 +63,10 @@ class _ForeCastScreenState extends State<ForeCastScreen> {
   }
 }
 
-List<Widget> dailyForecastSliverList(List<DailyForecast> dailyForecastList) {
+List<Widget> dailyForecastSliverList(
+    BuildContext context,
+    List<DailyForecast> dailyForecastList,
+    ) {
   List<Widget> sliverList = <Widget>[];
   final dateFormat = DateFormat('E d MMM', 'fr_FR');
   for(DailyForecast dailyForecast in dailyForecastList) {
@@ -68,13 +74,17 @@ List<Widget> dailyForecastSliverList(List<DailyForecast> dailyForecastList) {
         SliverAppBar(
           title: Row(
             children: [
-              Text(dateFormat.format(dailyForecast.dateTime).toString()),
+              Text(
+                dateFormat.format(dailyForecast.dateTime).toString(),
+                style: Theme.of(context).textTheme.headline6
+              ),
               const Spacer(),
-              Text('${dailyForecast.minTemperature}° - ${dailyForecast.maxTemperature}°')
+              Text('${dailyForecast.minTemperature}° | ${dailyForecast.maxTemperature}°',
+                style: Theme.of(context).textTheme.headline4),
             ],
           ),
           pinned: true,
-          backgroundColor: Colors.black,
+          //backgroundColor: Colors.black,
         )
     );
     sliverList.add(DailyForecastList(forecastList: dailyForecast.hourlyForecast));
