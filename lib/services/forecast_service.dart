@@ -4,8 +4,8 @@ import 'dart:math';
 
 import 'package:http/http.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:weather/features/models/daily_forecast.dart';
-import 'package:weather/features/models/hourly_forecast.dart';
+import 'package:weather/models/daily_forecast.dart';
+import 'package:weather/models/hourly_forecast.dart';
 
 extension DateOnlyCompare on DateTime {
   bool isSameDate(DateTime other) {

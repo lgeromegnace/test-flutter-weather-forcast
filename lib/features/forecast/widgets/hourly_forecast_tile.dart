@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:weather/features/models/hourly_forecast.dart';
+import 'package:weather/models/hourly_forecast.dart';
 
 class ForecastTile extends StatelessWidget {
   const ForecastTile({Key? key, required this.forecast}) : super(key: key);

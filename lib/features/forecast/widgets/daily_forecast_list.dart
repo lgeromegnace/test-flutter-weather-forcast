@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:weather/features/forecast/widgets/hourly_forecast_tile.dart';
-import 'package:weather/features/models/hourly_forecast.dart';
+import 'package:weather/models/hourly_forecast.dart';
 
 class DailyForecastList extends StatelessWidget {
   const DailyForecastList({Key? key, required this.forecastList}) : super(key: key);

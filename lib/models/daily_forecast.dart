@@ -1,4 +1,4 @@
-import 'package:weather/features/models/hourly_forecast.dart';
+import 'package:weather/models/hourly_forecast.dart';
 
 class DailyForecast {
   final DateTime dateTime;

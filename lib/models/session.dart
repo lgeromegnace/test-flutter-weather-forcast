@@ -1,6 +1,6 @@
 
 import 'package:flutter/cupertino.dart';
-import 'package:weather/features/models/user.dart';
+import 'package:weather/models/user.dart';
 
 class Session extends ChangeNotifier {
   bool isConnected = false;

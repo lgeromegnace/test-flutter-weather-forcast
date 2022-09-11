@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:weather/features/forecast/widgets/daily_forecast_list.dart';
-import 'package:weather/features/models/daily_forecast.dart';
-import 'package:weather/features/models/hourly_forecast.dart';
-import 'package:weather/features/models/session.dart';
+import 'package:weather/models/daily_forecast.dart';
+import 'package:weather/models/hourly_forecast.dart';
+import 'package:weather/models/session.dart';
 import 'package:weather/services/forecast_service.dart';
 
 class ForeCastScreen extends StatefulWidget {
