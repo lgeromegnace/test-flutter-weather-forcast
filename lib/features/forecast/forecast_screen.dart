@@ -29,7 +29,8 @@ class _ForeCastScreenState extends State<ForeCastScreen> {
       builder:(context, session, _) {
         return Scaffold(
           appBar: AppBar(
-            title: Text('Bienvenue ${session.user?.name}'),
+            title: Text('Bienvenue ${session.user?.name}',
+            style: Theme.of(context).textTheme.headline6),
           ),
           body: Padding(
             padding: const EdgeInsets.all(8.0),

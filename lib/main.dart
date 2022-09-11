@@ -34,8 +34,6 @@ class MyApp extends StatelessWidget {
           appBarTheme: Theme.of(context).appBarTheme.copyWith(
             color: const Color(0xFF0097a7),
           ),
-          // primaryColor: const Color(0xFF222727),
-          // cardColor: Colors.black12,
         ),
         initialRoute: '/',
         routes: {
