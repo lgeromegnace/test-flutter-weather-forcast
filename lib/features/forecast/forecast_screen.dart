@@ -3,7 +3,6 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:weather/features/forecast/widgets/daily_forecast_list.dart';
 import 'package:weather/models/daily_forecast.dart';
-import 'package:weather/models/hourly_forecast.dart';
 import 'package:weather/models/session.dart';
 import 'package:weather/services/forecast_service.dart';
 
@@ -17,14 +16,12 @@ class ForeCastScreen extends StatefulWidget {
 class _ForeCastScreenState extends State<ForeCastScreen> {
   final ForecastService service = ForecastService();
 
-  Future<List<HourlyForecast>>? futureForecastList;
-  Future<List<DailyForecast>>? futureDailyForecastList;
+  Future<List<DailyForecast>>? _futureDailyForecastList;
 
   @override
   void initState() {
     super.initState();
-    futureForecastList = ForecastService.fetchHourlyForecast();
-    futureDailyForecastList = ForecastService.fetchDailyForecast();
+    _futureDailyForecastList = ForecastService.fetchDailyForecast();
   }
   @override
   Widget build(BuildContext context) {
@@ -35,7 +32,7 @@ class _ForeCastScreenState extends State<ForeCastScreen> {
             title: Text('Bienvenue ${session.user?.name}'),
           ),
           body: FutureBuilder(
-              future: futureDailyForecastList,
+              future: _futureDailyForecastList,
               builder: (BuildContext context, AsyncSnapshot<List<DailyForecast>> snapshot) {
                 switch (snapshot.connectionState) {
                   case ConnectionState.none:

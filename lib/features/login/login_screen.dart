@@ -13,9 +13,9 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final formKey = GlobalKey<FormState>();
-  String email = '';
-  String password = '';
+  final _formKey = GlobalKey<FormState>();
+  String _email = '';
+  String _password = '';
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class _LoginScreenState extends State<LoginScreen> {
         title: const Text('Login'),
       ),
       body: Form(
-        key: formKey,
+        key: _formKey,
         child: ListView(
           padding: const EdgeInsets.all(20),
           children: [
@@ -41,7 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 }
                 return EmailValidator.validate(email) ? null : 'wrong format';
               },
-              onSaved: (newEmail) => setState(() => email = newEmail!),
+              onSaved: (newEmail) => setState(() => _email = newEmail!),
             ),
             const SizedBox(height: 16),
             TextFormField(
@@ -55,17 +55,17 @@ class _LoginScreenState extends State<LoginScreen> {
                 }
                 return 'wrong password format';
               },
-              onSaved: (newPassword) => setState(() => password = newPassword!),
+              onSaved: (newPassword) => setState(() => _password = newPassword!),
               obscureText: true,
             ),
             const SizedBox(height: 32),
             Consumer<Session>(
               builder: (context, session, _) {
                 return ElevatedButton(onPressed: () {
-                  final isValid = formKey.currentState?.validate();
+                  final isValid = _formKey.currentState?.validate();
                   if (isValid == true) {
-                    formKey.currentState?.save();
-                    User user = LoginService.login(email, password);
+                    _formKey.currentState?.save();
+                    User user = LoginService.login(_email, _password);
                     session.setUser(user);
                   }
                 }, child: const Text('Validate'));
