@@ -14,6 +14,6 @@ Une application basique qui affiche les prévisions météo des 5 prochains jour
 
 ## Reste à faire
 
-- Support multi-langue
+- Support multi-langues
 - pull to refresh
 - Persistence du login
