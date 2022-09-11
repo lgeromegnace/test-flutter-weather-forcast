@@ -8,14 +8,17 @@ class DailyForecastList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverList(
-        delegate: SliverChildBuilderDelegate(
-            childCount: forecastList.length,
-                (context, index) {
-              final HourlyForecast hourlyForecast = forecastList[index];
-              return ForecastTile(forecast: hourlyForecast);
-            }
-        )
+    return SliverToBoxAdapter(
+      child: SizedBox(
+        height: 200,
+        child: ListView.builder(itemBuilder: (context, index) {
+          final HourlyForecast hourlyForecast = forecastList[index];
+          return Center(child: HourlyForecastGridItem(forecast: hourlyForecast));
+        },
+          scrollDirection: Axis.horizontal,
+          itemCount: forecastList.length,
+        ),
+      )
     );
   }
 }
