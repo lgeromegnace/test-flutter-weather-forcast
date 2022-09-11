@@ -1,16 +1,19 @@
 # weather
 
-A simple app that provides weather forecast for the next five days.
+Une application basique qui affiche les prévision des 5 prochains jours.
 
-## Getting Started
+## Architecture
 
-This project is a starting point for a Flutter application.
+- State management: provider
 
-A few resources to get you started if this is your first Flutter project:
+## Features
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- Écran de login en dur avec des règles simples de validation (format d'email, taille min du mot de passe).
+- Écran des prévision pour les 5 prochains jours. Les prévisions sont regroupées par jour pour faciliter la lecture.
+- TU
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Reste à faire
+
+- Support multi-langue
+- pull to refresh
+- Persistence du login
